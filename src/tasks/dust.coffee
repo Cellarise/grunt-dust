@@ -104,12 +104,12 @@ module.exports = ( grunt ) ->
         if options.wrapper is "amd"
           # what should return AMD wrapper
           switch tplNames.length
-          when 0
-            returning = undefined
-          when 1
-            returning = _.last tplNames
-          else
-            returning = tplNames
+            when 0
+              returning = undefined
+            when 1
+              returning = _.last tplNames
+            else
+              returning = tplNames
 
           joined = amdHelper joined, options.wrapperOptions.deps, options.wrapperOptions.packageName, returning
         else if options.wrapper is "commonjs"
