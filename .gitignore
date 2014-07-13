@@ -2,3 +2,5 @@
 /examples/dst/
 /src/tmp/
 *npm-debug.log
+atlassian-ide-plugin.xml
+.idea/

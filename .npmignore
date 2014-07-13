@@ -5,3 +5,6 @@
 /.gitignore
 /.travis.yml
 /README.md
+atlassian-ide-plugin.xml
+.npmignore
+.idea/

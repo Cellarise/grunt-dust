@@ -1,32 +1,32 @@
 beautify = require( "js-beautify" ).js_beautify
 
 module.exports.init = (grunt) ->
-	# Wraps some content into AMD
-	# ---
-	(content, deps, name, returning) ->
-		args = []
-		paths = []
-		parts = []
+  # Wraps some content into AMD
+  # ---
+  (content, deps, name, returning) ->
+    args = []
+    paths = []
+    parts = []
 
-		for own key, dep of deps
-			args.push key.replace /^\d+|[^\w]+/g, "_"
-			paths.push JSON.stringify dep
+    for own key, dep of deps
+      args.push key.replace /^\d+|[^\w]+/g, "_"
+      paths.push JSON.stringify dep
 
-		# disable name part if packageName is null
-		unless name is null
-			# package name
-			if name?.length ? 0 > 0
-				parts.push JSON.stringify( name )
-			else if typeof returning is "string"
-				parts.push JSON.stringify returning
+    # disable name part if packageName is null
+    unless name is null
+      # package name
+      if name?.length ? 0 > 0
+        parts.push JSON.stringify( name )
+      else if typeof returning is "string"
+        parts.push JSON.stringify returning
 
 
-		# package deps
-		parts.push "[#{ paths.join "," }]" if paths.length
+    # package deps
+    parts.push "[#{ paths.join "," }]" if paths.length
 
-		renderFunction = """
+    renderFunction = """
 			function (locals, callback) {
-				var rendered;
+				var rendered = null;
 
 				dust.render(<%= template_name %>, locals, function(err, result) {
 					if(typeof callback === "function") {
@@ -34,37 +34,38 @@ module.exports.init = (grunt) ->
 							callback(err, result);
 						} catch(e) {}
 					}
-
 					if (err) {
-						throw err
+						throw err;
 					} else {
 						rendered = result;
 					}
 				});
-
 				return rendered;
-			}
+			};
 		"""
 
-		# package callback
-		if typeof returning is "string"
-			# single template
-			amdCallback = """
+    # package callback
+    if typeof returning is "string"
+      # single template
+      amdCallback = """
 				function (#{ args.join "," }) {
+          "use strict";
+          /* jshint ignore:start */
 					#{ content }
+					/* jshint ignore:end */
 					return #{ renderFunction.replace "<%= template_name %>", JSON.stringify returning }
 				}
 			"""
-		else
-			# bunch of templates
-			defines = for item in returning
-				"""
+    else
+      # bunch of templates
+      defines = for item in returning
+        """
 					define(#{ JSON.stringify item }, function() {
 						return #{ renderFunction.replace "<%= template_name %>", JSON.stringify item }
 					});
 				"""
 
-			amdCallback = """
+      amdCallback = """
 				function (#{ args.join "," }) {
 					#{ content }
 					#{ defines.join "" }
@@ -72,6 +73,6 @@ module.exports.init = (grunt) ->
 				}
 			"""
 
-		parts.push amdCallback
+    parts.push amdCallback
 
-		beautify "define(#{ parts.join( "," ) });", indent_size: 2
+    beautify "/*global define */ if (typeof define !== 'function') { var define = require('amdefine')(module); /* jshint ignore:line */ } define(#{ parts.join( "," ) });", indent_size: 2

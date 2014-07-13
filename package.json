@@ -1,18 +1,12 @@
 {
   "name": "grunt-dust",
-  "description": "Grunt.js plugin to compile dustjs templates.",
-  "version": "0.9.1",
+  "description": "This package has been forked from vtsvang/grunt-dust, and updates the amd wrapper to make it standard jshint lint tests and adds a new option 'cwd' to provide your own current working directory for relative dynamic_mappings task. Grunt.js plugin to compile dustjs templates.",
+  "version": "0.1.0",
   "homepage": "https://github.com/vtsvang/grunt-dust",
-  "author": {
-    "name": "Vladimir Tsvang",
-    "email": "vtsvang@gmail.com"
-  },
+  "author": "John Barry",
   "repository": {
     "type": "git",
-    "url": "git://github.com/vtsvang/grunt-dust.git"
-  },
-  "bugs": {
-    "url": "https://github.com/vtsvang/grunt-dust/issues"
+    "url": "git://github.com/cellarise/grunt-dust.git"
   },
   "licenses": [
     {
@@ -30,7 +24,7 @@
   },
   "dependencies": {
     "grunt": "~0.4.1",
-    "dustjs-linkedin": "2.3.3",
+    "dustjs-linkedin": "^2.4.0",
     "coffee-script": "~1.7.1",
     "js-beautify": "~1.4.2"
   },
